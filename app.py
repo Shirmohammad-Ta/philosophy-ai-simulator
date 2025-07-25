@@ -18,5 +18,7 @@ if st.button("Simulate!"):
         history = run_simulation(model, env)
         st.success("Simulation complete.")
         plot_history(history)
+        from visualizer import draw_emotion_summary
+        draw_emotion_summary(history)
     except Exception as e:
         st.error(str(e))
