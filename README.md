@@ -87,5 +87,5 @@ MIT License © 2025
 
 For questions, ideas or collaboration:
 
-📧 shirmohammad.tavangari@gmail.com  
-🌐 [GitHub](https://github.com/YOUR_USERNAME)
+📧 s.tavangari@alumni.ubc.ca  
+
