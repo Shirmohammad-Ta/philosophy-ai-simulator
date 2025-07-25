@@ -53,7 +53,7 @@ streamlit run app.py
 
 You will be able to try this online at:
 
-[https://your-username.streamlit.app](https://your-username.streamlit.app)
+[[https://your-username.streamlit.app](https://your-username.streamlit.app)](https://philosophy-ai-simulator.streamlit.app/)
 
 ---
 
