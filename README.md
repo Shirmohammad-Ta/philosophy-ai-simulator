@@ -77,11 +77,9 @@ MIT License © 2025
 
 ---
 
-## 🤝 Authors
+## 🤝 Author
 
-- **Shirmohammad Tavangari** — Research & Concept  
-- **Zahra Shakarami** — Modeling & Theory  
-- **Aref Yelghi** — AI Systems & Philosophy
+- **Shirmohammad Tavangari** 
 
 ---
 
