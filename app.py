@@ -1,24 +1,35 @@
-
+# app.py
 import streamlit as st
-from sentence_to_model import analyze_sentence
-from rl_agent import train_agent, run_simulation
-from visualizer import plot_history
+from sentence_to_model import analyze_philosophical_sentence
+from simulation import run_simulation
+from visualizer import plot_history, draw_emotion_summary
 
-st.set_page_config(page_title="Philosophy Emotional Simulator", layout="centered")
+st.set_page_config(page_title="Philosophical Emotion Simulator", layout="centered")
 
-st.title("🧠 Philosophy-to-Emotion Simulator")
-st.markdown("Enter a philosophical sentence in English:")
+st.title("🧠 Philosophical Emotion Simulator")
+st.markdown("Enter a philosophical sentence to explore its psychological impact over time.")
 
-sentence = st.text_input("💬 Philosophical sentence:")
+user_sentence = st.text_input("📜 Enter your philosophical sentence:")
 
-if st.button("Simulate!"):
+if user_sentence:
     try:
-        model_def = analyze_sentence(sentence)
-        model, env = train_agent()
-        history = run_simulation(model, env)
-        st.success("Simulation complete.")
+        model_def = analyze_philosophical_sentence(user_sentence)
+        author = model_def["author"]
+        variables = model_def["variables"]
+        eq_str = model_def["equation_str"]
+        description = model_def["description"]
+
+        st.markdown(f"**🧾 Author:** *{author}*")
+        st.markdown(f"**🔬 Interpreted Variables:** {variables}")
+        st.markdown(f"**📐 Equation Used:** `{eq_str}`")
+        st.markdown(f"**🧩 Description:** {description}")
+
+        # Run simulation
+        history = run_simulation()
+
+        # Show plots
         plot_history(history)
-        from visualizer import draw_emotion_summary
         draw_emotion_summary(history)
+
     except Exception as e:
-        st.error(str(e))
+        st.error(f"❌ Error: {str(e)}")
