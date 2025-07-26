@@ -1,23 +1,18 @@
 # sentence_to_model.py
+
+from quote_db_loader import load_quote_database
 from difflib import get_close_matches
 
-# Sample quote-author database
-quote_db = {
-    "Hell is other people.": "Jean-Paul Sartre",
-    "That which does not kill us makes us stronger.": "Friedrich Nietzsche",
-    "Man is nothing but what he makes of himself.": "Jean-Paul Sartre",
-    "Happiness depends upon ourselves.": "Aristotle",
-    "I think, therefore I am.": "René Descartes",
-    "The more one sacrifices themselves for social acceptance, the more existential emptiness they feel.": "Anonymous"
-}
+# Load the quote database (2500 quotes)
+QUOTE_DB = load_quote_database("quotes.csv")
 
 # Step 1: detect author
 def detect_author_nlp(sentence):
-    quotes = list(quote_db.keys())
-    match = get_close_matches(sentence, quotes, n=1, cutoff=0.6)
+    quotes = list(QUOTE_DB.keys())
+    match = get_close_matches(sentence.strip(), quotes, n=1, cutoff=0.9)
     if match:
-        return quote_db[match[0]]
-    return "Unknown"
+        return QUOTE_DB[match[0]]
+    return None
 
 # Step 2: extract emotional variables
 def extract_emotional_variables(sentence):
@@ -42,9 +37,12 @@ def construct_equation(variables):
     else:
         return None, "Equation not found"
 
-# Step 4: smart analyzer
+# Step 4: full analyzer
 def analyze_philosophical_sentence(sentence):
     author = detect_author_nlp(sentence)
+    if not author:
+        raise ValueError("This sentence is not found in the philosophical database.")
+
     variables = extract_emotional_variables(sentence)
     eq_func, eq_str = construct_equation(variables)
 
