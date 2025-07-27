@@ -1,4 +1,3 @@
-# sentence_to_model.py
 
 from quote_db_loader import load_quote_database
 from difflib import get_close_matches
@@ -18,12 +17,18 @@ def detect_author_nlp(sentence):
 def extract_emotional_variables(sentence):
     sentence = sentence.lower()
     variables = []
-    if "emptiness" in sentence or "meaningless" in sentence:
+
+    emptiness_keywords = ["emptiness", "meaningless", "loneliness", "void", "worthless", "despair", "nihilism", "voidness", "lost"]
+    identity_keywords = ["identity", "self", "ego", "personality", "who i am", "individuality", "selfhood", "self-awareness"]
+    acceptance_keywords = ["acceptance", "social", "belonging", "community", "rejection", "inclusion", "friendship", "support"]
+
+    if any(word in sentence for word in emptiness_keywords):
         variables.append("E")
-    if "identity" in sentence or "self" in sentence:
+    if any(word in sentence for word in identity_keywords):
         variables.append("H")
-    if "acceptance" in sentence or "social" in sentence:
+    if any(word in sentence for word in acceptance_keywords):
         variables.append("A")
+
     return variables
 
 # Step 3: construct math model
