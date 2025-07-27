@@ -53,7 +53,7 @@ streamlit run app.py
 
 You will be able to try this online at:
 
-[[https://your-username.streamlit.app](https://your-username.streamlit.app)](https://philosophy-ai-simulator.streamlit.app/)
+[https://your-username.streamlit.app](https://your-username.streamlit.app)
 
 ---
 
@@ -77,9 +77,11 @@ MIT License © 2025
 
 ---
 
-## 🤝 Author
+## 🤝 Authors
 
-- **Shirmohammad Tavangari** 
+- **Shirmohammad Tavangari** — Research & Concept  
+- **Zahra Shakarami** — Modeling & Theory  
+- **Aref Yelghi** — AI Systems & Philosophy
 
 ---
 
@@ -87,5 +89,5 @@ MIT License © 2025
 
 For questions, ideas or collaboration:
 
-📧 s.tavangari@alumni.ubc.ca  
-
+📧 shirmohammad.tavangari@gmail.com  
+🌐 [GitHub](https://github.com/YOUR_USERNAME)
