@@ -4,4 +4,8 @@ gym
 matplotlib
 numpy
 shimmy>=2.0
+transformers
+torch
+stable-baselines3
+gymnasium
 
