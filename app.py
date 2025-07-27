@@ -5,6 +5,7 @@ from sentence_to_model import analyze_philosophical_sentence
 from simulation import run_simulation
 from visualizer import plot_history, draw_emotion_summary
 from quote_db_loader import load_quote_database
+from difflib import get_close_matches
 
 st.set_page_config(page_title="Philosophical Emotion Simulator", layout="centered")
 
@@ -19,11 +20,14 @@ user_sentence = st.text_input("📜 Enter your philosophical sentence:")
 
 if user_sentence:
     normalized_input = user_sentence.strip().lower()
-    if normalized_input not in normalized_quote_db:
+    matches = get_close_matches(normalized_input, normalized_quote_db.keys(), n=1, cutoff=0.9)
+
+    if not matches:
         st.error("❌ Error: This sentence is not found in the philosophical database.")
     else:
+        matched_sentence = matches[0]
         try:
-            model_def = analyze_philosophical_sentence(user_sentence)
+            model_def = analyze_philosophical_sentence(matched_sentence)
             author = model_def["author"]
             variables = model_def["variables"]
             eq_str = model_def["equation_str"]
