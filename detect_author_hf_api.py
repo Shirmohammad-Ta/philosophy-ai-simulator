@@ -13,10 +13,12 @@ headers = {
 }
 
 def detect_author(quote):
-    prompt = f"""You are a philosophy expert. 
-Which philosopher is most likely to have said the following quote?
+    prompt = f"""The following quote is attributed to one of the most well-known philosophers.
+Your task is to identify the most likely author of this quote, based on their known philosophical ideas and writing style.
+
 Quote: "{quote}"
-Answer only with the name of the philosopher (e.g., Nietzsche, Sartre, Kant, etc.). If you're unsure, say "Unknown".
+
+Respond only with the name of the philosopher (e.g., Nietzsche, Sartre, Kant). If unsure, say "Unknown".
 """
     payload = {
         "inputs": prompt,
@@ -31,6 +33,6 @@ Answer only with the name of the philosopher (e.g., Nietzsche, Sartre, Kant, etc
 
 # Example usage
 if __name__ == "__main__":
-    quote = "He who has a why to live can bear almost any how."
+    quote = "What does not kill me makes me stronger."
     author = detect_author(quote)
     print("Detected author:", author)
