@@ -7,18 +7,25 @@ def detect_author(quote):
     Returns the author's name if found, otherwise returns "Unknown".
     """
     try:
-        params = {"search": quote}
-        res = requests.get("https://philosophyapi.pythonanywhere.com/api/ideas/", params=params, timeout=10)
-        data = res.json()
-        results = data.get("results", [])
-        if results:
-            return results[0]["author"]
-        return "Unknown"
+        response = requests.get(
+            "https://philosophyapi.pythonanywhere.com/api/ideas/",
+            params={"search": quote},
+            timeout=10
+        )
+        if response.status_code == 200:
+            data = response.json()
+            results = data.get("results", [])
+            if results:
+                return results[0]["author"]
+            else:
+                return "Unknown"
+        else:
+            return f"Error: HTTP {response.status_code}"
     except Exception as e:
-        return "Error or Unknown"
+        return f"Error: {str(e)}"
 
-# Example usage
+# Test the function
 if __name__ == "__main__":
-    quote = "I think, therefore I am."
+    quote = "I think, therefore I am"
     author = detect_author(quote)
     print("Detected author:", author)
