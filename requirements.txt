@@ -9,4 +9,6 @@ torch
 stable-baselines3
 gymnasium
 python-dotenv
+sentence-transformers
+
 
