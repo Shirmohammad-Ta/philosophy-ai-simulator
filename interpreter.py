@@ -1,28 +1,34 @@
 # interpreter.py
 
 def interpret_graph(history):
-    H = history["H"]
-    A = history["A"]
-    E = history["E"]
+    H_final = history["H"][-1]
+    A_final = history["A"][-1]
+    E_final = history["E"][-1]
 
-    delta_H = H[-1] - H[0]
-    delta_A = A[-1] - A[0]
-    delta_E = E[-1] - E[0]
+    interpretations = []
 
-    interpretation = "🧠 Interpretation:\n"
+    # Identity
+    if H_final < 0.3:
+        interpretations.append("- Severe identity erosion.")
+    elif H_final > 0.7:
+        interpretations.append("- Strong personal identity maintained.")
+    elif 0.3 <= H_final <= 0.7:
+        interpretations.append("- Partial identity conflict detected.")
 
-    if delta_H < -0.5 and delta_E > 0.5:
-        interpretation += "- Severe identity erosion with rising existential emptiness.\n"
-    elif delta_H < -0.3:
-        interpretation += "- Identity is declining noticeably.\n"
-    if delta_A > 0.5:
-        interpretation += "- Strong tendency toward social approval.\n"
-    if delta_E > 0.4:
-        interpretation += "- Emptiness rising significantly, potential for psychological distress.\n"
-    if delta_H > 0 and delta_A > 0:
-        interpretation += "- Positive integration of identity and acceptance observed.\n"
+    # Acceptance
+    if A_final > 0.7:
+        interpretations.append("- High desire for social approval.")
+    elif A_final < 0.3:
+        interpretations.append("- Low dependence on external validation.")
+    else:
+        interpretations.append("- Moderate need for social acceptance.")
 
-    if interpretation.strip() == "🧠 Interpretation:":
-        interpretation += "- No significant emotional shift detected."
+    # Emptiness
+    if E_final > 0.7:
+        interpretations.append("- Rising existential emptiness may lead to distress.")
+    elif E_final > 0.5:
+        interpretations.append("- Noticeable emotional fatigue detected.")
+    elif E_final < 0.3:
+        interpretations.append("- Emotional stability maintained.")
 
-    return interpretation
+    return "\n".join(interpretations)
