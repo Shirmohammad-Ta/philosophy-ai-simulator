@@ -6,7 +6,7 @@ from interpreter import interpret_graph
 from philosophy_checker import is_philosophical
 from quote_attributor import guess_author
 
-st.set_page_config(page_title="Philosophical Impact Simulator", layout="wide")
+st.set_page_config(page_title="Philosophical Sentence Emotional Impact Simulator", layout="wide")
 st.title("🌀 Philosophical Sentence Emotional Impact Simulator")
 
 # User Input
@@ -14,12 +14,13 @@ sentence = st.text_area("🖋️ Enter a philosophical sentence", height=100)
 
 if sentence:
     with st.expander("🔍 Step 1: Is this philosophical?"):
-        is_philo, score = is_philosophical(sentence)
+        is_philo, score, author_from_check = is_philosophical(sentence)
         st.markdown(f"**Philosophical?** {'✅ Yes' if is_philo else '❌ No'} (Confidence: {score:.2f})")
 
     with st.expander("🧠 Step 2: Author Identification"):
-        author = guess_author(sentence)
-        st.markdown(f"**Guessed Author:** _{author}_")
+        author_ai = guess_author(sentence)
+        st.markdown(f"**From Knowledge Base:** _{author_from_check}_")
+        st.markdown(f"**From API Guess:** _{author_ai}_")
 
     if is_philo:
         with st.expander("📈 Step 3: Emotional Simulation"):
@@ -34,7 +35,6 @@ if sentence:
         st.warning("This sentence was not identified as philosophical. Try another.")
 else:
     st.info("Enter a sentence above to begin.")
-
 
 # Footer at bottom center
 st.markdown(
