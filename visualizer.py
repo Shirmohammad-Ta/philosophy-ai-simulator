@@ -28,10 +28,18 @@ def describe_emotional_state(H, A, E):
         return "🧘 Undefined emotional state – Mixed signals."
 
 def draw_emotion_summary(history):
-    st.subheader("🧠 Emotional States at Key Time Points")
+    st.subheader("🧠 Overall Emotional Summary")
+
+    summary_states = []
     for t in [0, 15, 30, 50]:
         H = history["H"][t]
         A = history["A"][t]
         E = history["E"][t]
         state = describe_emotional_state(H, A, E)
-        st.markdown(f"**Step {t}** → {state}")
+        summary_states.append(state)
+
+    # Pick the most frequent emotional state as the dominant one
+    from collections import Counter
+    most_common_state = Counter(summary_states).most_common(1)[0][0]
+
+    st.markdown(f"### 🧭 Dominant State: {most_common_state}")
