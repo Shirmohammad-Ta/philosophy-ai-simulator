@@ -3,27 +3,20 @@ import numpy as np
 from semantic_mapper import extract_semantic_weights
 
 def run_simulation(sentence, steps=51):
-    """
-    Simulates emotional dynamics (H, A, E) based on a sentence.
-    Uses nonlinear and amplified dynamics for meaningful graph variations.
-    """
-
-    # Extract semantic influence weights
     weights = extract_semantic_weights(sentence)
     acceptance_drive = weights["acceptance_drive"]
     identity_erosion = weights["identity_erosion"]
     emptiness_risk = weights["emptiness_risk"]
 
-    H = [1.0]  # Identity
-    A = [0.0]  # Acceptance
-    E = [0.0]  # Emptiness
+    H = [1.0]
+    A = [0.0]
+    E = [0.0]
 
     for t in range(1, steps):
         prev_H = H[-1]
         prev_A = A[-1]
         prev_E = E[-1]
 
-        # Nonlinear and weighted changes
         delta_A = np.tanh(acceptance_drive * (1 - prev_A)) * 0.1
         delta_H = -np.power(identity_erosion * (1 - prev_A), 1.2) * 0.08
         delta_E = (emptiness_risk * (1 - prev_H) + prev_A * 0.3) * 0.06

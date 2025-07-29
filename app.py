@@ -2,29 +2,35 @@
 import streamlit as st
 from simulator import run_simulation
 from visualizer import plot_history, draw_emotion_summary
-from quote_author_finder import guess_author_by_web
+from interpreter import interpret_graph
+from philosophy_checker import is_philosophical
+from quote_attributor import guess_author
 
-st.set_page_config(page_title="Philosophical Insight AI", layout="centered")
+st.set_page_config(page_title="Philosophical Impact Simulator", layout="wide")
+st.title("🌀 Philosophical Sentence Emotional Impact Simulator")
 
-st.title("🧠 Philosophical Insight through AI")
-st.markdown("Enter a philosophical sentence and see its psychological evolution and author attribution.")
-
-# User input
-sentence = st.text_input("📜 Enter your philosophical sentence:", "")
+# User Input
+sentence = st.text_area("🖋️ Enter a philosophical sentence", height=100)
 
 if sentence:
-    with st.spinner("Running simulation and analyzing..."):
-        # Run simulation
-        history = run_simulation(sentence)
+    with st.expander("🔍 Step 1: Is this philosophical?"):
+        is_philo, score = is_philosophical(sentence)
+        st.markdown(f"**Philosophical?** {'✅ Yes' if is_philo else '❌ No'} (Confidence: {score:.2f})")
 
-        # Plot emotional variables
-        plot_history(history)
+    with st.expander("🧠 Step 2: Author Identification"):
+        author = guess_author(sentence)
+        st.markdown(f"**Guessed Author:** _{author}_")
 
-        # Show emotion summary
-        draw_emotion_summary(history)
+    if is_philo:
+        with st.expander("📈 Step 3: Emotional Simulation"):
+            history = run_simulation(sentence)
+            plot_history(history)
+            draw_emotion_summary(history)
 
-        # Show guessed author
-        author = guess_author_by_web(sentence)
-        st.markdown("---")
-        st.subheader("🖋️ Quote Attribution")
-        st.markdown(f"**Guessed Author:** {author}")
+        with st.expander("🧾 Step 4: Interpretation"):
+            interpretation = interpret_graph(history)
+            st.markdown(f"```\n{interpretation}```")
+    else:
+        st.warning("This sentence was not identified as philosophical. Try another.")
+else:
+    st.info("Enter a sentence above to begin.")
