@@ -77,7 +77,7 @@ MIT License © 2025
 
 ---
 
-## 🤝 Authors
+## 🤝 Author
 
 - **Shirmohammad Tavangari** 
 ---
