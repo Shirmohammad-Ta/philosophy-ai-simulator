@@ -34,3 +34,13 @@ if sentence:
         st.warning("This sentence was not identified as philosophical. Try another.")
 else:
     st.info("Enter a sentence above to begin.")
+
+
+# Footer at bottom center
+st.markdown(
+    "<div style='text-align: center; padding-top: 50px;'>"
+    "<hr style='border: none; border-top: 1px solid #ccc;'>"
+    "<p style='color: gray;'>Created by: <strong>Shirmohammad Tavangari</strong></p>"
+    "</div>",
+    unsafe_allow_html=True
+)
