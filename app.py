@@ -1,28 +1,17 @@
 # app.py
 import streamlit as st
-from detect_author import detect_author
-from sentence_to_model import analyze_sentence
-from rl_agent import train_agent, run_simulation
-from visualizer import plot_history, draw_emotion_summary
+from detect_author_api import detect_author
 
-st.set_page_config(page_title="Philosophical Simulator", layout="centered")
-st.title("🧠 Philosophy-to-Emotion Simulator")
+st.set_page_config(page_title="Philosopher Detector", page_icon="🧠")
 
-st.markdown("✏️ Enter a philosophical quote below. The system will guess the author and simulate its emotional effects.")
+st.title("🧠 Who Said This? - Philosophy Quote Detector")
 
-user_input = st.text_area("Philosophical Sentence", height=100)
+quote = st.text_area("✍️ Enter a famous philosophical quote:")
 
-if st.button("Simulate") and user_input.strip():
-    with st.spinner("Detecting author and running simulation..."):
-        author = detect_author(user_input)
-        st.markdown(f"👤 **Detected Author:** `{author}`")
-
-        try:
-            model_def = analyze_sentence(user_input)
-            model, env = train_agent()
-            history = run_simulation(model, env)
-            st.success("Simulation complete.")
-            plot_history(history)
-            draw_emotion_summary(history)
-        except Exception as e:
-            st.error(str(e))
+if st.button("🔍 Detect Author"):
+    if quote.strip():
+        with st.spinner("Detecting author..."):
+            author = detect_author(quote)
+        st.success(f"✅ Detected Author: **{author}**")
+    else:
+        st.warning("⚠️ Please enter a quote to proceed.")
