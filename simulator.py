@@ -4,11 +4,11 @@ from semantic_mapper import extract_semantic_weights
 
 def run_simulation(sentence, steps=51):
     """
-    Simulates emotional dynamics over time (H, A, E) based on a philosophical sentence.
-    The semantic meaning of the sentence influences the simulation parameters.
+    Simulates emotional dynamics (H, A, E) based on a sentence.
+    Uses nonlinear and amplified dynamics for meaningful graph variations.
     """
 
-    # Extract semantic weights from the sentence
+    # Extract semantic influence weights
     weights = extract_semantic_weights(sentence)
     acceptance_drive = weights["acceptance_drive"]
     identity_erosion = weights["identity_erosion"]
@@ -19,13 +19,21 @@ def run_simulation(sentence, steps=51):
     E = [0.0]  # Emptiness
 
     for t in range(1, steps):
-        # Adjusted delta based on semantic weights
-        delta_A = 0.015 + acceptance_drive * 0.01 + np.random.uniform(0, 0.005)
-        delta_H = -0.01 - identity_erosion * 0.01 - np.random.uniform(0, 0.005)
-        delta_E = emptiness_risk * 0.02 + (0.01 if H[-1] < 0.5 else 0)
+        prev_H = H[-1]
+        prev_A = A[-1]
+        prev_E = E[-1]
 
-        A.append(min(1.0, A[-1] + delta_A))
-        H.append(max(0.0, H[-1] + delta_H))
-        E.append(min(1.0, E[-1] + delta_E if H[-1] < 0.6 else E[-1]))
+        # Nonlinear and weighted changes
+        delta_A = np.tanh(acceptance_drive * (1 - prev_A)) * 0.1
+        delta_H = -np.power(identity_erosion * (1 - prev_A), 1.2) * 0.08
+        delta_E = (emptiness_risk * (1 - prev_H) + prev_A * 0.3) * 0.06
+
+        A_new = np.clip(prev_A + delta_A, 0.0, 1.0)
+        H_new = np.clip(prev_H + delta_H, 0.0, 1.0)
+        E_new = np.clip(prev_E + delta_E, 0.0, 1.0)
+
+        A.append(A_new)
+        H.append(H_new)
+        E.append(E_new)
 
     return {"H": H, "A": A, "E": E}
