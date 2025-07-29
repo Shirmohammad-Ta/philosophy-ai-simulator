@@ -79,15 +79,12 @@ MIT License © 2025
 
 ## 🤝 Authors
 
-- **Shirmohammad Tavangari** — Research & Concept  
-- **Zahra Shakarami** — Modeling & Theory  
-- **Aref Yelghi** — AI Systems & Philosophy
-
+- **Shirmohammad Tavangari** 
 ---
 
 ## 📬 Contact
 
 For questions, ideas or collaboration:
 
-📧 shirmohammad.tavangari@gmail.com  
-🌐 [GitHub](https://github.com/YOUR_USERNAME)
+📧s.tavangari@alumni.ubc.ca  
+🌐 ((https://shirmohammad-ta.github.io/))
