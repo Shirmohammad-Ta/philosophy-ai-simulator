@@ -1,44 +1,37 @@
-# app.py
-
 import streamlit as st
 from simulator import run_simulation
 from visualizer import plot_history, draw_emotion_summary
-from interpreter import interpret_graph
-from philosophy_db import is_in_database
+from interpreter import interpret_history
+from quote_fetcher import search_quote_in_dataset
 
-st.set_page_config(page_title="Philosophy-AI", layout="centered")
+st.set_page_config(page_title="Philosophy-AI Simulator", layout="centered")
 
-st.title("🧠 Philosophy-AI Simulator")
-st.markdown("Enter a philosophical quote to simulate its psychological effects.")
+st.title("🧠 Philosophy-AI Emotional Simulator")
+st.markdown("Enter a **philosophical quote** to simulate its psychological effect.")
 
-# Input from user
-quote = st.text_area("🖋️ Enter your philosophical quote here:", height=120)
+quote = st.text_area("✍️ Enter a philosophical quote:", height=100)
 
 if st.button("🔍 Analyze Quote"):
-    if not quote.strip():
-        st.warning("Please enter a valid quote.")
-    else:
-        # Step 1: Check if it's in our philosophy database
-        found = is_in_database(quote)
-        if found:
-            st.success("✅ Verified philosophical quote.")
-        else:
-            st.info("⚠️ Not found in philosophical database. Proceeding anyway...")
+    if quote.strip():
+        # Step 1: Verify if it's a known philosophical quote using Hugging Face API
+        found, matched_quote, author = search_quote_in_dataset(quote)
 
-        # Step 2: Run simulation
+        if found:
+            st.success(f"✅ Verified philosophical quote by **{author}**.")
+        else:
+            st.warning("⚠️ Quote not found in philosophical database. Proceeding anyway...")
+
+        # Step 2: Run the AI simulation
         history = run_simulation(quote)
 
-        # Step 3: Visualize
-        st.subheader("📈 Emotional Simulation Graph")
+        # Step 3: Plot dynamics
         plot_history(history)
-
-        # Step 4: Emotional State Summary
         draw_emotion_summary(history)
 
-        # Step 5: Interpretation
-        st.subheader("🧠 Scientific Interpretation")
-        interpretation = interpret_graph(history)
-        st.code(interpretation, language="markdown")
+        # Step 4: Show scientific interpretation
+        st.subheader("📘 Interpretation")
+        interpretation = interpret_history(history)
+        st.markdown(interpretation)
 
-# Footer
-st.markdown("<br><center style='opacity:0.6;'>Created by: Shirmohammad Tavangari</center>", unsafe_allow_html=True)
+st.markdown("---")
+st.markdown("<center style='font-size: 14px;'>Created by: Shirmohammad Tavangari ❤️</center>", unsafe_allow_html=True)
