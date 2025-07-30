@@ -1,34 +1,38 @@
 # interpreter.py
 
-def interpret_graph(history):
-    H_final = history["H"][-1]
-    A_final = history["A"][-1]
-    E_final = history["E"][-1]
+def interpret_history(history):
+    H_values = history["H"]
+    A_values = history["A"]
+    E_values = history["E"]
 
-    interpretations = []
+    final_H = H_values[-1]
+    final_A = A_values[-1]
+    final_E = E_values[-1]
 
-    # Identity
-    if H_final < 0.3:
-        interpretations.append("- Severe identity erosion.")
-    elif H_final > 0.7:
-        interpretations.append("- Strong personal identity maintained.")
-    elif 0.3 <= H_final <= 0.7:
-        interpretations.append("- Partial identity conflict detected.")
+    interpretation = []
 
-    # Acceptance
-    if A_final > 0.7:
-        interpretations.append("- High desire for social approval.")
-    elif A_final < 0.3:
-        interpretations.append("- Low dependence on external validation.")
+    # تحلیل بر اساس مقدار هویت
+    if final_H < 0.3:
+        interpretation.append("- Severe identity erosion.")
+    elif final_H < 0.6:
+        interpretation.append("- Moderate struggle with personal identity.")
     else:
-        interpretations.append("- Moderate need for social acceptance.")
+        interpretation.append("- Strong sense of identity retained.")
 
-    # Emptiness
-    if E_final > 0.7:
-        interpretations.append("- Rising existential emptiness may lead to distress.")
-    elif E_final > 0.5:
-        interpretations.append("- Noticeable emotional fatigue detected.")
-    elif E_final < 0.3:
-        interpretations.append("- Emotional stability maintained.")
+    # تحلیل بر اساس پذیرش اجتماعی
+    if final_A > 0.7:
+        interpretation.append("- High need for social approval.")
+    elif final_A > 0.4:
+        interpretation.append("- Moderate concern for social acceptance.")
+    else:
+        interpretation.append("- Low concern for external validation.")
 
-    return "\n".join(interpretations)
+    # تحلیل بر اساس پوچی
+    if final_E > 0.7:
+        interpretation.append("- Rising existential emptiness may lead to distress.")
+    elif final_E > 0.4:
+        interpretation.append("- Signs of emotional fatigue.")
+    else:
+        interpretation.append("- Emotional state relatively stable.")
+
+    return "\n".join(interpretation)
