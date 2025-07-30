@@ -1,46 +1,44 @@
 # app.py
+
 import streamlit as st
 from simulator import run_simulation
 from visualizer import plot_history, draw_emotion_summary
 from interpreter import interpret_graph
-from philosophy_checker import is_philosophical
-from quote_attributor import guess_author
+from philosophy_db import is_in_database
 
-st.set_page_config(page_title="Philosophical Sentence Emotional Impact Simulator", layout="wide")
-st.title("🌀 Philosophical Sentence Emotional Impact Simulator")
+st.set_page_config(page_title="Philosophy-AI", layout="centered")
 
-# User Input
-sentence = st.text_area("🖋️ Enter a philosophical sentence", height=100)
+st.title("🧠 Philosophy-AI Simulator")
+st.markdown("Enter a philosophical quote to simulate its psychological effects.")
 
-if sentence:
-    with st.expander("🔍 Step 1: Is this philosophical?"):
-        is_philo, score, author_from_check = is_philosophical(sentence)
-        st.markdown(f"**Philosophical?** {'✅ Yes' if is_philo else '❌ No'} (Confidence: {score:.2f})")
+# Input from user
+quote = st.text_area("🖋️ Enter your philosophical quote here:", height=120)
 
-    with st.expander("🧠 Step 2: Author Identification"):
-        author_ai = guess_author(sentence)
-        st.markdown(f"**From Knowledge Base:** _{author_from_check}_")
-        st.markdown(f"**From API Guess:** _{author_ai}_")
-
-    if is_philo:
-        with st.expander("📈 Step 3: Emotional Simulation"):
-            history = run_simulation(sentence)
-            plot_history(history)
-            draw_emotion_summary(history)
-
-        with st.expander("🧾 Step 4: Interpretation"):
-            interpretation = interpret_graph(history)
-            st.markdown(f"```\n{interpretation}```")
+if st.button("🔍 Analyze Quote"):
+    if not quote.strip():
+        st.warning("Please enter a valid quote.")
     else:
-        st.warning("This sentence was not identified as philosophical. Try another.")
-else:
-    st.info("Enter a sentence above to begin.")
+        # Step 1: Check if it's in our philosophy database
+        found = is_in_database(quote)
+        if found:
+            st.success("✅ Verified philosophical quote.")
+        else:
+            st.info("⚠️ Not found in philosophical database. Proceeding anyway...")
 
-# Footer at bottom center
-st.markdown(
-    "<div style='text-align: center; padding-top: 50px;'>"
-    "<hr style='border: none; border-top: 1px solid #ccc;'>"
-    "<p style='color: gray;'>Created by: <strong>Shirmohammad Tavangari</strong></p>"
-    "</div>",
-    unsafe_allow_html=True
-)
+        # Step 2: Run simulation
+        history = run_simulation(quote)
+
+        # Step 3: Visualize
+        st.subheader("📈 Emotional Simulation Graph")
+        plot_history(history)
+
+        # Step 4: Emotional State Summary
+        draw_emotion_summary(history)
+
+        # Step 5: Interpretation
+        st.subheader("🧠 Scientific Interpretation")
+        interpretation = interpret_graph(history)
+        st.code(interpretation, language="markdown")
+
+# Footer
+st.markdown("<br><center style='opacity:0.6;'>Created by: Shirmohammad Tavangari</center>", unsafe_allow_html=True)
