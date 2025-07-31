@@ -46,7 +46,7 @@ if st.button("🔍 Analyze Quote"):
         found, matched_quote, author = search_quote_in_dataset(user_quote)
 
         with st.expander("🗣️ Quote Attribution"):
-            if found:
+            if found and matched_quote:
                 st.success(f'✅ Matched to: "{matched_quote}" — *{author}*')
             else:
                 st.warning("⚠️ Quote not found in philosophical database. Proceeding anyway...")
