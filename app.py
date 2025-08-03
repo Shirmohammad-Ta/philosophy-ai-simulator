@@ -1,24 +1,23 @@
 import streamlit as st
-import ollama  # کتابخانه رسمی Ollama
+from transformers import pipeline
 
-# تنظیمات مدل
-MODEL_NAME = "phi3"  # یا "mistral" اگر خواستی تغییر دهی
+# تنظیم مدل از Hugging Face (رایگان)
+classifier = pipeline("text-classification", model="finiteautomata/bertweet-base-sentiment-analysis")
 
-def analyze_philosophy(text):
-    response = ollama.generate(
-        model=MODEL_NAME,
-        prompt=f"Is this philosophical? Analyze in 2 lines: '{text}'"
-    )
-    return response["response"]
+def is_philosophical(text):
+    keywords = ["philosophy", "ethics", "kant", "nietzsche", "metaphysics"]
+    return any(keyword in text.lower() for keyword in keywords)
 
-# رابط کاربری
 st.title("🤖 Free Philosophy AI Simulator")
-user_input = st.text_area("Enter English text (Philosophical only):")
+user_input = st.text_area("Enter English text:")
 
 if st.button("Analyze"):
     if not user_input.strip():
         st.warning("Please enter text!")
     else:
-        with st.spinner("Asking the philosopher..."):
-            answer = analyze_philosophy(user_input)
-        st.success(answer)
+        if is_philosophical(user_input):
+            st.success("✅ This text is philosophical!")
+            analysis = classifier(user_input)
+            st.write("Analysis:", analysis)
+        else:
+            st.warning("⚠️ This doesn't seem philosophical.")
