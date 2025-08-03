@@ -1,15 +1,15 @@
 import streamlit as st
 from transformers import pipeline
 
-# تنظیم مدل (سبک‌تر برای اجرا روی فضای ابری)
+# مدل سبک‌تر برای اجرا روی فضای ابری
 @st.cache_resource
 def load_model():
-    return pipeline("text-classification", model="finiteautomata/bertweet-base-sentiment-analysis")
+    return pipeline("text-classification", model="distilbert-base-uncased-finetuned-sst-2-english")
 
 classifier = load_model()
 
 def is_philosophical(text):
-    keywords = ["philosophy", "ethics", "kant", "nietzsche", "metaphysics", "existentialism"]
+    keywords = ["philosophy", "ethics", "kant", "nietzsche", "metaphysics"]
     return any(keyword in text.lower() for keyword in keywords)
 
 # رابط کاربری
@@ -23,7 +23,7 @@ if st.button("Analyze"):
         if is_philosophical(user_input):
             st.success("✅ This text is philosophical!")
             with st.spinner("Analyzing..."):
-                analysis = classifier(user_input[:512])  # محدودیت طول متن برای جلوگیری از خطا
-            st.json(analysis)
+                analysis = classifier(user_input[:512])  # محدودیت طول متن
+            st.write("Analysis:", analysis)
         else:
             st.warning("⚠️ This doesn't seem philosophical.")
